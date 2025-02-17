@@ -1,0 +1,32 @@
+.grid-container {
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    position: relative;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  td button {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    font-size: 12px;
+    padding: 3px;
+  }
