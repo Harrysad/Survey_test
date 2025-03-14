@@ -73,6 +73,33 @@ function CreateSurvey() {
     }));
   };
 
+  const removeColumn = () => {
+    setGrid((prev) => {
+      if (prev.columnHeadings.length > 1) {
+        const newColumnHeadings = prev.columnHeadings.slice(0, -1);
+        const newRows = prev.rows.map((row) => ({
+          ...row,
+          cells: row.cells.slice(0, -1),
+        }));
+        return {
+          columnHeadings: newColumnHeadings,
+          rows: newRows,
+        };
+      }
+      return prev;
+    });
+  };
+
+  const removeRow = () => {
+    setGrid((prev) => {
+      if (prev.rows.length > 1) {
+        const newRows = prev.rows.slice(0, -1);
+        return { ...prev, rows: newRows };
+      }
+      return prev;
+    });
+  };
+
   const handleColumnHeadingChange = (index, value) => {
     const newHeadings = [...grid.columnHeadings];
     newHeadings[index] = value;
@@ -149,6 +176,12 @@ function CreateSurvey() {
         <button onClick={addColumn} className="btn btn-secondary m-2">
           Dodaj kolumnę
         </button>
+        <button onClick={removeRow} className="btn btn-danger m-2">
+          Usuń wiersz
+        </button>
+        <button onClick={removeColumn} className="btn btn-danger m-2">
+          Usuń kolumnę
+        </button>
 
         <table border="1">
           <thead>
@@ -184,7 +217,11 @@ function CreateSurvey() {
                     key={cellIndex}
                     onClick={() => handleCellClick(rowIndex, cellIndex)}
                   >
-                    <span style={{ color: "gray" }}>{cell.type}</span>
+                    {!(
+                      selectedCell &&
+                      selectedCell.rowIndex === rowIndex &&
+                      selectedCell.cellIndex === cellIndex
+                    ) && <span style={{ color: "gray" }}>{cell.type}</span>}
 
                     {selectedCell &&
                       selectedCell.rowIndex === rowIndex &&

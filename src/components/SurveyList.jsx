@@ -34,12 +34,17 @@ function SurveyList() {
       <h1>Lista Ankiet</h1>
       <Link to="/surveys/create" className="btn btn-primary mb-3">
         Utwórz ankietę </Link>
-      <ul>
+        <ul>
         {surveys.map((survey) => (
           <li key={survey._id}>
             <h4>{survey.title}</h4>
             <p>{survey.description}</p>
-            <button className="btn btn-danger" onClick={() => handleDelete(survey._id)}>
+
+            <Link to={`/surveys/${survey._id}`} className="btn btn-info">
+              Zobacz szczegóły
+            </Link>
+
+            <button className="btn btn-danger ms-2" onClick={() => handleDelete(survey._id)}>
               Usuń
             </button>
           </li>

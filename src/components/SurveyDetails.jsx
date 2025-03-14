@@ -1,40 +1,73 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
 
 function SurveyDetails() {
   const { id } = useParams();
-  const [survey, setSurvey] = useState(null);
+  const [survey, setSurvey] = useState(null); 
+  const [message, setMessage] = useState(""); 
 
   useEffect(() => {
     const fetchSurvey = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/api/survey/${id}`);
+        const response = await axios.get(
+          `http://localhost:5050/api/survey/${id}`
+        );
         setSurvey(response.data.survey);
       } catch (error) {
-        console.error('Error fetching survey:', error);
+        console.error("Błąd podczas pobierania ankiety:", error);
+        setMessage("Wystąpił błąd podczas ładowania ankiety.");
       }
     };
-
     fetchSurvey();
   }, [id]);
 
-  if (!survey) return <div>Ładowanie ankiety...</div>;
+  if (!survey) {
+    return <div>Ładowanie ankiety...</div>;
+  }
 
   return (
     <div className="container">
       <h1>{survey.title}</h1>
       <p>{survey.description}</p>
 
-      <div>
-        <h3>Pytań: </h3>
-        {survey.questions.map((question, index) => (
-          <div key={index}>
-            <p>{question.questionType}</p>
-            {/* Możesz dodać wyświetlanie pytań w zależności od typu */}
-          </div>
-        ))}
+      <div style={{ position: "relative" }}>
+        <table border="1"
+        style={{margin: "0 auto", borderCollapse: "collapse", marginBottom: "20px"}}>
+          <thead>
+            <tr>
+              <th></th>
+              {survey.grid.columnHeadings.map((heading, colIndex) => (
+                <th key={colIndex}>
+                  <strong>{heading}</strong>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {survey.grid.rows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                <td>
+                  <strong>{row.rowHeading}</strong>
+                </td>
+                {row.cells.map((cell, cellIndex) => (
+                  <td key={cellIndex}>
+                    <span style={{ color: "gray" }}>{cell.type}</span>
+                    <div>{cell.value}</div> 
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+
+      <Link to={`/surveys/edit/${id}`} className="btn btn-warning">
+        Edytuj ankietę
+      </Link>
+      <Link to="/" className="btn btn-secondary ms-2">
+        Powrót do listy
+      </Link>
     </div>
   );
 }
