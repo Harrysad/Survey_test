@@ -30,13 +30,10 @@ function CreateSurvey() {
         "http://localhost:5050/api/survey/create",
         surveyData
       );
+      console.log(response);
       if (response.status === 201) {
         setMessage("Ankieta zapisana!");
-        setTimeout(() => {
-          setMessage("");
           navigate("/");
-        }, 2000);
-
         setTitle("");
         setDescription("");
         setGrid({

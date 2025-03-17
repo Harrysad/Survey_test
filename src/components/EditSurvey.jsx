@@ -9,7 +9,6 @@ function EditSurvey() {
   const [survey, setSurvey] = useState(null);
   const [message, setMessage] = useState("");
   const [selectedCell, setSelectedCell] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const fetchSurvey = async () => {
@@ -31,10 +30,8 @@ function EditSurvey() {
       const response = await axios.put(`http://localhost:5050/api/survey/${id}`, survey);
       if (response.status === 200) {
         setMessage("Ankieta zaktualizowana!");
-        setTimeout(() => {
           setMessage("");
           navigate(`/surveys/${id}`);
-        }, 2000);
       }
     } catch (error) {
       console.error("Błąd podczas aktualizacji ankiety:", error);
@@ -56,7 +53,6 @@ function EditSurvey() {
 
   const handleCellClick = (rowIndex, cellIndex) => {
     setSelectedCell({ rowIndex, cellIndex });
-    setShowDropdown(true);
   };
 
   const changeCellType = (type) => {
@@ -67,7 +63,6 @@ function EditSurvey() {
     newRows[rowIndex].cells[cellIndex].type = type;
     setSurvey((prev) => ({ ...prev, grid: { ...prev.grid, rows: newRows } }));
 
-    setShowDropdown(false);
     setSelectedCell(null);
   };
 
